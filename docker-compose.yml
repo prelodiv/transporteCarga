@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  transportecarga:
+    image: image-transportecarga
+    build: .
+    container_name: transportecarga-application
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/app
+  mysql:
+    image: mysql:8.0
+    container_name: test_mysql_container
+    environment:
+      - MYSQL_ROOT_PASSWORD=1234
+      - MYSQL_DATABASE=transportecarga
+    volumes:
+      - ./mysql:/var/lib/mysql
+    ports:
+      - "3307:3306"

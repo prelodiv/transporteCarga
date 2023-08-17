@@ -8,16 +8,18 @@ import json
 
 truck = APIRouter()
 
-# @truck.get("/")
-# def root():
-#     return "Hi I Am Trucks Route"
 
 @truck.get("/api/truck")
 def get_trucks():
     with engine.connect() as conn:
         result = conn.execute(trucks.select()).fetchall()
         conn.commit()
-        return json.dumps(result, default=str)
+        # return json.dumps(result, default=str)
+        return {
+            "success": True,
+            "data": json.dumps(result, default=str),
+            "message": HTTP_204_NO_CONTENT
+        }
 
 
 @truck.get("/api/truck/{truck_id}")
@@ -48,10 +50,11 @@ def update_truck(data_update: TruckSchema, truck_id: int):
 
         result = conn.execute(trucks.select().where(trucks.c.id == truck_id)).first()
 
-        return {
-            "success": True,
-            "data": json.dumps(result, default=str)
-        }
+        # return {
+        #     "success": True,
+        #     "data": json.dumps(result, default=str)
+        # }
+        return Response(status_code=HTTP_204_NO_CONTENT)
     
 @truck.delete("/api/truck/{truck_id}", status_code=HTTP_204_NO_CONTENT)
 def delete_truck(truck_id: int):
